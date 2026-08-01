@@ -224,7 +224,7 @@
 
   <nav class="toc">
     <a href="#overview">Overview</a><span class="sep">/</span><a href="#key-findings">Key findings</a><span class="sep">/</span><a
-    href="#methodology">Methodology</a><span class="sep">/</span><a href="#limitations">Limitations</a>
+    href="#method">Method</a><span class="sep">/</span><a href="#limitations">Limitations</a>
   </nav>
 
   <h2 id="overview">Overview</h2>
@@ -232,7 +232,7 @@
 
   <h2 id="key-findings">Key findings</h2>
   <div class="key-finding">
-    <p>Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) and
+    <p>83 of the scanned sites had an identifiable platform. <strong>56 of those are on open-source platforms</strong> (67%) and
       <strong>27 run proprietary platforms</strong> (33%).</p>
 
     <div class="chart-full">
@@ -253,9 +253,7 @@
     <div class=chart-count>1/4</div>
   </div>
   <div class="key-finding">
-    <p>However, traffic skews toward proprietary platforms. Across all identifiable sites, <strong> proprietary
-      platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source
-      platforms</strong>.</p>
+    <p>However, traffic skews toward proprietary platforms. <strong>Proprietary platforms account for roughly 195 million views</strong>.  There were <strong>16 million views for open-source platforms</strong>.</p>
 
     <div class="chart-full">
       <p class="chart-label">Page views by platform type</p>
@@ -293,7 +291,7 @@
     <div class="chart-count">3/4</div>
   </div>
   <div class="key-finding">
-    <p>EEven when the platform is proprietary, the front end still runs open-source code. 17 of the 23 ASP.NET sites
+    <p>Even when the platform is proprietary, the front end still runs open-source code. 17 of the 23 ASP.NET sites
       ship jQuery, 6 use Modernizr, 5 use Bootstrap, and 1 uses jQuery UI.</p>
     <div class="chart-full">
       <p class="chart-label">Open-source JavaScript libraries on proprietary ASP.NET sites</p>
@@ -310,23 +308,21 @@
   </div>
   <hr>
 
-  <h2 id="methodology">Methodology</h2>
+  <h2 id="method">Method</h2>
   <p>I created the hostname list from a Google Analytics report of sites using the statewide CA.gov tag over a 28-day window
     (July 1–28, 2026). The original list had 1,227 hostname records. The dataset was then deduplicated and numeric-only entries were removed leaving 1,115 hostnames.
     The numeric-only entries were likely IP addresses rather than named web properties.</p>
-  <p>The scanner ran on the top 155 sites by traffic volume. For each of those hostnames, a <a
-    href="https://github.com/zakiya/2026-ca-foss-audit"> Python script</a> crawled the site and inspected HTTP response
-    headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only
-    sites returning HTTP 200 could be fingerprinted. Blocked (403), redirecting, or unreachable sites were marked
-    accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
+  <p>The scanner ran on the top 155 sites by traffic volume. A <a
+    href="https://github.com/zakiya/2026-ca-foss-audit"> Python script</a> crawled each site and inspected HTTP response
+    headers and HTML source. Then it identified the underlying platform and classified it as open source or proprietary. Only sites returning HTTP 200 could be fingerprinted. The script marked blocked (403), redirecting, or unreachable sites accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
 
   <h2 id="limitations">Limitations of this report</h2>
   <ul>
     <li>This dataset does not include sites that do not use the statewide Google Analytics tag.</li>
-    <li>Only the top 155 hostnames by traffic were scanned. Some of the scanned sites block automated traffic and could not be analyzed.</li>
-    <li>The Google Analytics list of 1227 hostnames includes staging, test, and internal environments. Those environments, have low traffic but some may still be included in the analysis.
-    </li>
-    <li>Findings should be interpreted at the hostname level, not the agency level. A single agency may operate
+    <li>Only the top 155 hostnames by traffic were scanned.</li>
+    <li>The scanner could not analyze sites that block automated traffic.</li>
+    <li>The Google Analytics list of 1227 hostnames includes some staging, test, and internal environments.</li>
+    <li>The audit reports at the hostname level, not the agency level. A single agency may operate
       multiple hostnames on different platforms.
     </li>
   </ul>
