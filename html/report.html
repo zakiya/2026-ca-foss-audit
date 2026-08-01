@@ -7,7 +7,7 @@
   <style>
     :root {
       --border-raduis: 12px;
-      --color-background: #fffff;
+      --color-background: #ffffff;
       --color-body: #1a1a1a;
       --color-heading: #4b4bb2;
       --color-open: #4b4bb2;
@@ -40,7 +40,7 @@
     .page {
       max-width: 760px;
       margin: 0 auto;
-      background: var(--color-background);
+      background: var(--gray-100);
       border: 0.5px solid var(--color-body);
       border-radius: var(--border-raduis);
       padding: 3rem 2rem;
@@ -206,7 +206,7 @@
     }
 
     .key-finding {
-      background-color: var(--gray-100);
+      background-color: var(--color-background);
       padding: 2rem;
       border-radius: var(--border-raduis);
       margin-bottom: 3rem;
@@ -218,18 +218,17 @@
 <div class="page">
 
   <p class="kicker">Zakiya Khabir</p>
-  <h1>2026 California Web Technology Audit</h1>
-  <p class="meta">July 2026 · <a href="audit.csv">Download the raw findings (audit.csv)</a> · <a
+  <h1>2026 California website open source audit</h1>
+  <p class="meta">August 2026 · <a href="audit.csv">Download raw findings (audit.csv)</a> · <a
     href="https://github.com/zakiya/2026-ca-foss-audit">Source on GitHub</a></p>
 
   <nav class="toc">
     <a href="#overview">Overview</a><span class="sep">/</span><a href="#key-findings">Key findings</a><span class="sep">/</span><a
-    href="#details">Details</a>
+    href="#methodology">Methodology</a><span class="sep">/</span><a href="#limitations">Limitations</a>
   </nav>
 
   <h2 id="overview">Overview</h2>
-  <p>Audit of California government web hostnames. Data was collected by from Google Analytics and crawling each
-    hostname. The 155 sites with the highest traffic were scanned.</p>
+  <p>Audit of 155 top California government websites. I used data from Google Analytics to help determine which hostnames to scan. I used a crawler and source code to determine the kind of technology.</p>
 
   <h2 id="key-findings">Key findings</h2>
   <div class="key-finding">
@@ -254,7 +253,7 @@
     <div class=chart-count>1/4</div>
   </div>
   <div class="key-finding">
-    <p>However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary
+    <p>However, traffic skews toward proprietary platforms. Across all identifiable sites, <strong> proprietary
       platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source
       platforms</strong>.</p>
 
@@ -276,7 +275,7 @@
     <div class="chart-count">2/4</div>
   </div>
   <div class="key-finding">
-    <p>WordPress is the most popular platform.</p>
+    <p>WordPress is the most popular platform of the scanned sites.</p>
     <div class="chart-full">
       <p class="chart-label">Platform breakdown — scanned sites with detected stack</p>
       <p class="chart-sublabel">83 of 155 scanned sites · by number of hostnames</p>
@@ -294,7 +293,7 @@
     <div class="chart-count">3/4</div>
   </div>
   <div class="key-finding">
-    <p>Even when the platform is proprietary, open source is embedded in the front end. 17 of the 23 ASP.NET sites
+    <p>EEven when the platform is proprietary, the front end still runs open-source code. 17 of the 23 ASP.NET sites
       ship jQuery, 6 use Modernizr, 5 use Bootstrap, and 1 uses jQuery UI.</p>
     <div class="chart-full">
       <p class="chart-label">Open-source JavaScript libraries on proprietary ASP.NET sites</p>
@@ -311,69 +310,29 @@
   </div>
   <hr>
 
-  <h2 id="details">Details</h2>
 
-  <h3>Methodology</h3>
-  <p>Site lists were drawn from a Google Analytics report filtered to the statewide CA.gov tag over a 28-day window
-    (July 1–28, 2026). The original list had 1,227 hostname records. The dataset was then deduplicated and numeric-only entries were removed eaving 1,115 hostnames.
+  <h2 id="methodology">Methodology</h2>
+  <p>I created the hostname list from a Google Analytics report of sites using the statewide CA.gov tag over a 28-day window
+    (July 1–28, 2026). The original list had 1,227 hostname records. The dataset was then deduplicated and numeric-only entries were removed leaving 1,115 hostnames.
     The numeric-only entries were likely IP addresses rather than named web properties.</p>
   <p>The scanner ran on the top 155 sites by traffic volume. For each of those hostnames, a <a
     href="https://github.com/zakiya/2026-ca-foss-audit"> Python script</a> crawled the site and inspected HTTP response
     headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only
     sites returning HTTP 200 could be fingerprinted. Blocked (403), redirecting, or unreachable sites were marked
     accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
-  <p>Because coverage depends on adoption of the statewide GA tag, sites that do not use it are not represented in this dataset.</p>
 
-  <h3>CSV column descriptions</h3>
-  <a href="audit.csv">Download (audit.csv)</a>
 
-  <h4><code>hostname-cleaned</code></h4>
-  <p>The normalized domain or subdomain of a California government web site (e.g., <code>edd.ca.gov</code>, <code>dmv.ca.gov</code>).
-
-  <h4><code>canonical-to-text</code></h4>
-  <p>The canonical URL the hostname resolves to, expressed as plain text.
-
-  <h4><code>ga-total-views</code></h4>
-  <p>Total Google Analytics page views recorded for the hostname across the measurement period. Used as a proxy for
-    public-facing traffic volume. Higher-traffic sites represent broader public impact.</p>
-
-  <h4><code>techstack-status</code></h4>
-  <p>The HTTP status code returned when the hostname was crawled. A blank value means the scanner was not run on this
-    hostname</p>
-
-  <p>Only sites returning <code>200</code> could have their platform identified.</p>
-
-  <h4><code>techstack-opensource-platform</code></h4>
-  <p>Whether the detected platform is open source. Values:</p>
+  <h2 id="limitations">Limitations of this report</h2>
   <ul>
-    <li><code>yes</code> — confirmed open-source platform</li>
-    <li><code>no</code> — confirmed proprietary platform </li>
-    <li><code>unknown</code> — site was reachable but platform could not be identified</li>
-    <li><code>error</code> — site was unreachable during scanning</li>
-    <li><em>blank</em> — not scanned</li>
-  </ul>
-
-  <h4><code>techstack-platform</code></h4>
-  <p>The specific CMS or web platform detected.  Sites that returned a non-200 status or where detection was inconclusive
-    are marked <code>undetermined</code>.</p>
-
-  <h4><code>techstack-frameworks</code></h4>
-  <p>Third-party JavaScript libraries and tools detected on the page. Blank where none were detected or the site
-    was not scanned.</p>
-
-  <h3 id="notes">Notes</h3>
-  <ul>
-    <li>Hostnames include staging, test, and internal environments in addition to public production sites; traffic
-      figures help distinguish between them.
+    <li>This dataset does not include sites that do not use the statewide Google Analytics tag.</li>
+    <li>Hostnames may include staging, test, and internal environments in addition to public production sites.
     </li>
-    <li>Only the top 155 hostnames by traffic were scanned; findings should not be generalized to all 1,115 hostnames in
-      the dataset.
+    <li>Only the top 155 hostnames by traffic were scanned; findings should not be generalized.
     </li>
     <li>Findings should be interpreted at the hostname level, not the agency level — a single agency may operate
       multiple hostnames on different platforms.
     </li>
   </ul>
-
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
