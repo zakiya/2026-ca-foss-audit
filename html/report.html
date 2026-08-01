@@ -5,26 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>2026 California Open Source Audit</title>
 <style>
+  :root {
+    --color-background: #fffff;
+    --color-body: #1a1a1a;
+    --color-heading: #4b4bb2;
+    --color-open: #4b4bb2;
+    --color-proprietary: #fd7e14;
+    --color-unresolved: #6c757d;
+    --serif: "Noto Serif", serif;
+    --sans: "Public Sans", sans-serif;
+    --gray-100: #f8f9fa;
+    --gray-300: #dee2e6;
+    --gray-border: #adb5bd;
+    --gray-600: #6c757d;
+    --gray-800: #343a40;
+  }
+
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: var(--sans);
     font-size: 16px;
     line-height: 1.7;
-    color: #1a1a18;
-    background: #fafaf8;
+    color: var(--color-body);
+    background: var(--color-background);
     padding: 3rem 1.5rem;
   }
   .page {
     max-width: 760px;
     margin: 0 auto;
-    background: #fff;
-    border: 0.5px solid #e1e0d9;
+    background: var(--color-background);
+    border: 0.5px solid var(--color-body);
     border-radius: 12px;
     padding: 3rem 3.5rem;
   }
   .kicker {
     font-size: 13px;
-    color: #888780;
+    color: var(--gray-800);
     text-transform: uppercase;
     letter-spacing: 0.06em;
     margin-bottom: 0.5rem;
@@ -33,34 +49,34 @@
     font-size: 26px;
     font-weight: 500;
     line-height: 1.3;
-    color: #0b0b0b;
+    color: var(--color-body);
     margin-bottom: 0.25rem;
   }
   .meta {
     font-size: 14px;
-    color: #888780;
+    color: var(--gray-800);
     margin-bottom: 1.25rem;
   }
   h2 {
     font-size: 17px;
     font-weight: 500;
-    color: #0b0b0b;
+    color: var(--color-body);
     margin: 2.5rem 0 0.75rem;
   }
   h3 {
     font-size: 14px;
     font-weight: 500;
-    color: #52514e;
+    color: var(--gray-600);
     margin: 1.5rem 0 0.25rem;
   }
   h4 {
     font-size: 13px;
     font-weight: 500;
-    color: #888780;
+    color: var(--gray-800);
     margin: 1.25rem 0 0.25rem;
   }
-  p { margin-bottom: 1rem; color: #2c2c2a; }
-  a { color: #0f6e56; }
+  p { margin-bottom: 1rem; color: var(--color-body); }
+  a { color: var(--color-heading); }
   .toc {
     display: flex;
     flex-wrap: wrap;
@@ -68,55 +84,33 @@
     font-size: 13px;
     margin-bottom: 2.5rem;
     padding-bottom: 2rem;
-    border-bottom: 0.5px solid #e1e0d9;
+    border-bottom: 0.5px solid var(--gray-border);
   }
   .toc a {
-    color: #52514e;
+    color: var(--gray-600);
     text-decoration: none;
   }
-  .toc a:hover { color: #0f6e56; }
+  .toc a:hover { color: var(--color-open); }
   .toc span.sep {
-    color: #d8d6cc;
+    color: var(--gray-300);
     margin: 0 0.6rem;
   }
   p:last-child { margin-bottom: 0; }
   ul { margin: 0.5rem 0 1rem 1.25rem; }
-  li { margin-bottom: 0.35rem; color: #2c2c2a; }
+  li { margin-bottom: 0.35rem; color: var(--gray-600); }
   code {
     font-family: 'SF Mono', 'Fira Code', monospace;
     font-size: 13px;
-    background: #f1efe8;
+    background: var(--gray-300);
     padding: 1px 5px;
     border-radius: 4px;
-    color: #52514e;
+    color: var(--gray-800);
   }
   hr {
     border: none;
-    border-top: 0.5px solid #e1e0d9;
+    border-top: 0.5px solid var(--gray-border);
     margin: 2.5rem 0;
   }
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    margin: 1rem 0 1.5rem;
-  }
-  th {
-    text-align: left;
-    font-weight: 500;
-    font-size: 12px;
-    color: #888780;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 8px 12px;
-    border-bottom: 0.5px solid #e1e0d9;
-  }
-  td {
-    padding: 8px 12px;
-    border-bottom: 0.5px solid #f1efe8;
-    color: #2c2c2a;
-  }
-  tr:last-child td { border-bottom: none; }
   .badge {
     display: inline-block;
     font-size: 11px;
@@ -124,16 +118,16 @@
     padding: 2px 8px;
     border-radius: 4px;
   }
-  .badge-oss { background: #e1f5ee; color: #0f6e56; }
-  .badge-prop { background: #faece7; color: #993c1d; }
+  .badge-oss { background: var(--gray-300); color: var(--color-open); }
+  .badge-prop { background: var(--gray-300); color: var(--color-proprietary); }
   .chart-label {
     font-size: 13px;
-    color: #888780;
+    color: var(--gray-800);
     margin-bottom: 2px;
   }
   .chart-sublabel {
     font-size: 11px;
-    color: #b4b2a9;
+    color: var(--gray-600);
     margin-bottom: 12px;
   }
   .chart-wrap {
@@ -146,7 +140,7 @@
     gap: 12px;
     margin-top: 10px;
     font-size: 12px;
-    color: #52514e;
+    color: var(--gray-600);
   }
   .legend span {
     display: flex;
@@ -163,6 +157,12 @@
   @media (max-width: 600px) {
     .page { padding: 1.5rem; }
   }
+  .key-finding {
+    background: var(--gray-100);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 3rem;
+  }
 </style>
 </head>
 <body>
@@ -173,7 +173,7 @@
   <p class="meta">July 2026 · <a href="audit.csv">Download the raw findings (audit.csv)</a> · <a href="https://github.com/zakiya/2026-ca-foss-audit">Source on GitHub</a></p>
 
   <nav class="toc">
-    <a href="#overview">Overview</a><span class="sep">/</span><a href="#key-findings">Key Findings</a><span class="sep">/</span><a href="#details">Details</a>
+    <a href="#overview">Overview</a><span class="sep">/</span><a href="#key-findings">Key findings</a><span class="sep">/</span><a href="#details">Details</a>
   </nav>
 
   <h2 id="overview">Overview</h2>
@@ -181,9 +181,10 @@
 
   <hr>
 
-  <h2 id="key-findings">Key Findings</h2>
+  <h2 id="key-findings">Key findings</h2>
 
-  <p>Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) and <strong>27 run proprietary platforms</strong> (33%).</p>
+  <div class="key-finding">
+  <p>1. Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) and <strong>27 run proprietary platforms</strong> (33%).</p>
 
   <div class="chart-full">
     <p class="chart-label">Results of 155 scanned sites</p>
@@ -192,13 +193,15 @@
       <canvas id="chart1" role="img" aria-label="Bar chart: of 155 scanned sites, 56 are open source, 27 proprietary, 72 unresolved">56 open source, 27 proprietary, 72 unresolved.</canvas>
     </div>
     <div class="legend">
-      <span><span class="swatch" style="background:#1baf7a"></span>Open source 36%</span>
-      <span><span class="swatch" style="background:#eb6834"></span>Proprietary 17%</span>
-      <span><span class="swatch" style="background:#888780"></span>Unresolved 46%</span>
+      <span><span class="swatch" style="background:var(--color-open)"></span>Open source 36%</span>
+      <span><span class="swatch" style="background:var(--color-proprietary)"></span>Proprietary 17%</span>
+      <span><span class="swatch" style="background:var(--color-unresolved)"></span>Unresolved 46%</span>
     </div>
   </div>
+  </div>
+  <div class="key-finding">
 
-  <p>However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source platforms</strong>.</p>
+  <p>2. However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source platforms</strong>.</p>
 
   <div class="chart-full">
     <p class="chart-label">Page views by platform type</p>
@@ -207,13 +210,16 @@
       <canvas id="chart2" role="img" aria-label="Bar chart: proprietary sites received 195M views, open source 16.6M, unresolved 89M">Proprietary: 195M. Open source: 16.6M. Unresolved: 89M.</canvas>
     </div>
     <div class="legend">
-      <span><span class="swatch" style="background:#1baf7a"></span>Open source</span>
-      <span><span class="swatch" style="background:#eb6834"></span>Proprietary</span>
-      <span><span class="swatch" style="background:#888780"></span>Unresolved</span>
+      <span><span class="swatch" style="background:var(--color-open)"></span>Open source</span>
+      <span><span class="swatch" style="background:var(--color-proprietary)"></span>Proprietary</span>
+      <span><span class="swatch" style="background:var(--color-unresolved)"></span>Unresolved</span>
     </div>
   </div>
+  </div>
+  <div class="key-finding">
 
-  <p>WordPress is the most popular platform.</p>
+
+  <p" >3. WordPress is the most popular platform.</p>
 
   <div class="chart-full">
     <p class="chart-label">Platform breakdown — scanned sites with detected stack</p>
@@ -222,12 +228,15 @@
       <canvas id="chart3" role="img" aria-label="Horizontal bar chart: WordPress 51, ASP.NET 23, Joomla 4, Sitecore 3, Drupal 1, Granicus 1">WordPress: 51. ASP.NET: 23. Joomla: 4. Sitecore: 3. Drupal: 1. Granicus: 1.</canvas>
     </div>
     <div class="legend">
-      <span><span class="swatch" style="background:#1baf7a"></span>Open source</span>
-      <span><span class="swatch" style="background:#eb6834"></span>Proprietary</span>
+      <span><span class="swatch" style="background:var(--color-open)"></span>Open source</span>
+      <span><span class="swatch" style="background:var(--color-proprietary);"></span>Proprietary</span>
     </div>
   </div>
+  </div>
+ <div class="key-finding">
 
-  <p>Even where the platform layer is proprietary, open source is embedded in the front end. 17 of the 23 ASP.NET sites ship jQuery, 6 use Modernizr, 5 use Bootstrap, and 1 uses jQuery UI.</p>
+
+<p>4. Even when the platform is proprietary, open source is embedded in the front end. 17 of the 23 ASP.NET sites ship jQuery, 6 use Modernizr, 5 use Bootstrap, and 1 uses jQuery UI.</p>
 
   <div class="chart-full">
     <p class="chart-label">Open-source JavaScript libraries on proprietary ASP.NET sites</p>
@@ -237,7 +246,7 @@
     </div>
   </div>
 
-
+ </div>
   <hr>
 
   <h2 id="details">Details</h2>
@@ -295,9 +304,9 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const gridColor = '#e1e0d9';
-const tickColor = '#888780';
-const labelColor = '#52514e';
+const gridColor = '#dee2e6'; //gray-300
+const tickColor = '#343a40'; //gray-800
+const labelColor = '#6c757d'; //gray-600
 
 new Chart(document.getElementById('chart1'), {
   type: 'bar',
@@ -305,7 +314,7 @@ new Chart(document.getElementById('chart1'), {
     labels: ['Open source', 'Proprietary', 'Unresolved'],
     datasets: [{
       data: [56, 27, 72],
-      backgroundColor: ['#1baf7a', '#eb6834', '#888780'],
+      backgroundColor: ['#4b4bb2', '#fd7e14', '#343a40'],
       borderRadius: 4,
       borderSkipped: 'bottom'
     }]
@@ -326,7 +335,7 @@ new Chart(document.getElementById('chart2'), {
     labels: ['Open source', 'Proprietary', 'Unresolved'],
     datasets: [{
       data: [16638328, 195653666, 89059910],
-      backgroundColor: ['#1baf7a', '#eb6834', '#888780'],
+      backgroundColor: ['#fd7e14', '#4b4bb2', '#343a40'],
       borderRadius: 4,
       borderSkipped: 'bottom'
     }]
@@ -351,7 +360,7 @@ new Chart(document.getElementById('chart3'), {
     labels: ['WordPress', 'ASP.NET', 'Joomla', 'Sitecore', 'Drupal', 'Granicus'],
     datasets: [{
       data: [51, 23, 4, 3, 1, 1],
-      backgroundColor: ['#1baf7a','#eb6834','#1baf7a','#eb6834','#1baf7a','#eb6834'],
+      backgroundColor: ['#4b4bb2','#fd7e14','#4b4bb2','#fd7e14','#4b4bb2','#fd7e14'],
       borderRadius: 4,
       borderSkipped: 'left'
     }]
@@ -373,7 +382,7 @@ new Chart(document.getElementById('chart4'), {
     labels: ['jQuery', 'Modernizr', 'Bootstrap', 'jQuery UI'],
     datasets: [{
       data: [17, 6, 5, 1],
-      backgroundColor: '#1baf7a',
+      backgroundColor: '#4b4bb2',
       borderRadius: 4,
       borderSkipped: 'left'
     }]
