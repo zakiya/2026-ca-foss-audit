@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 California Web Technology Audit</title>
+<title>2026 California Open Source Audit</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -126,13 +126,6 @@
   }
   .badge-oss { background: #e1f5ee; color: #0f6e56; }
   .badge-prop { background: #faece7; color: #993c1d; }
-  .charts-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin: 1.5rem 0;
-  }
-  .chart-block { }
   .chart-label {
     font-size: 13px;
     color: #888780;
@@ -169,14 +162,13 @@
   .chart-full { margin: 1.5rem 0; }
   @media (max-width: 600px) {
     .page { padding: 1.5rem; }
-    .charts-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 <div class="page">
 
-  <p class="kicker">TechCA · Free Open Source Software Group</p>
+  <p class="kicker">Zakiya Khabir</p>
   <h1>2026 California Web Technology Audit</h1>
   <p class="meta">July 2026 · <a href="audit.csv">Download the raw findings (audit.csv)</a> · <a href="https://github.com/zakiya/2026-ca-foss-audit">Source on GitHub</a></p>
 
@@ -185,7 +177,7 @@
   </nav>
 
   <h2 id="overview">Overview</h2>
-  <p>Audit of California government web hostnames. Data was collected by from Google Analytics and crawling each hostname. The 115 sites with the highest traffic were scanned.</p>
+  <p>Audit of California government web hostnames. Data was collected by from Google Analytics and crawling each hostname. The 155 sites with the highest traffic were scanned.</p>
 
   <hr>
 
@@ -193,37 +185,35 @@
 
   <p>Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) and <strong>27 run proprietary platforms</strong> (33%).</p>
 
-  <p>However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source platforms</strong>.</p>
-
-  <p>Its also worth noting that nearly all of the proprietary sites, use some kind of open source framework or library like Bootstrap. </p>
-
-
-  <div class="charts-grid">
-    <div class="chart-block">
-      <p class="chart-label">Results of 155 scanned sites</p>
-      <p class="chart-sublabel">959 additional sites not scanned</p>
-      <div class="chart-wrap" style="height:190px;">
-        <canvas id="chart1" role="img" aria-label="Bar chart: of 155 scanned sites, 56 are open source, 27 proprietary, 72 unresolved">56 open source, 27 proprietary, 72 unresolved.</canvas>
-      </div>
-      <div class="legend">
-        <span><span class="swatch" style="background:#1baf7a"></span>Open source 36%</span>
-        <span><span class="swatch" style="background:#eb6834"></span>Proprietary 17%</span>
-        <span><span class="swatch" style="background:#888780"></span>Unresolved 46%</span>
-      </div>
+  <div class="chart-full">
+    <p class="chart-label">Results of 155 scanned sites</p>
+    <p class="chart-sublabel">959 additional sites not scanned</p>
+    <div class="chart-wrap" style="height:220px;">
+      <canvas id="chart1" role="img" aria-label="Bar chart: of 155 scanned sites, 56 are open source, 27 proprietary, 72 unresolved">56 open source, 27 proprietary, 72 unresolved.</canvas>
     </div>
-    <div class="chart-block">
-      <p class="chart-label">Page views by platform type</p>
-      <p class="chart-sublabel">Scanned sites only · July 1–28, 2026</p>
-      <div class="chart-wrap" style="height:190px;">
-        <canvas id="chart2" role="img" aria-label="Bar chart: proprietary sites received 195M views, open source 16.6M, unresolved 89M">Proprietary: 195M. Open source: 16.6M. Unresolved: 89M.</canvas>
-      </div>
-      <div class="legend">
-        <span><span class="swatch" style="background:#1baf7a"></span>Open source</span>
-        <span><span class="swatch" style="background:#eb6834"></span>Proprietary</span>
-        <span><span class="swatch" style="background:#888780"></span>Unresolved</span>
-      </div>
+    <div class="legend">
+      <span><span class="swatch" style="background:#1baf7a"></span>Open source 36%</span>
+      <span><span class="swatch" style="background:#eb6834"></span>Proprietary 17%</span>
+      <span><span class="swatch" style="background:#888780"></span>Unresolved 46%</span>
     </div>
   </div>
+
+  <p>However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source platforms</strong>.</p>
+
+  <div class="chart-full">
+    <p class="chart-label">Page views by platform type</p>
+    <p class="chart-sublabel">Scanned sites only · July 1–28, 2026</p>
+    <div class="chart-wrap" style="height:220px;">
+      <canvas id="chart2" role="img" aria-label="Bar chart: proprietary sites received 195M views, open source 16.6M, unresolved 89M">Proprietary: 195M. Open source: 16.6M. Unresolved: 89M.</canvas>
+    </div>
+    <div class="legend">
+      <span><span class="swatch" style="background:#1baf7a"></span>Open source</span>
+      <span><span class="swatch" style="background:#eb6834"></span>Proprietary</span>
+      <span><span class="swatch" style="background:#888780"></span>Unresolved</span>
+    </div>
+  </div>
+
+  <p>WordPress is the most popular platform.</p>
 
   <div class="chart-full">
     <p class="chart-label">Platform breakdown — scanned sites with detected stack</p>
@@ -237,6 +227,16 @@
     </div>
   </div>
 
+  <p>Even where the platform layer is proprietary, open source is embedded in the front end. 17 of the 23 ASP.NET sites ship jQuery, 6 use Modernizr, 5 use Bootstrap, and 1 uses jQuery UI.</p>
+
+  <div class="chart-full">
+    <p class="chart-label">Open-source JavaScript libraries on proprietary ASP.NET sites</p>
+    <p class="chart-sublabel">17 of 23 ASP.NET sites (74%) use at least one open-source library</p>
+    <div class="chart-wrap" style="height:190px;">
+      <canvas id="chart4" role="img" aria-label="Horizontal bar chart: of 23 ASP.NET sites, 17 use jQuery, 6 Modernizr, 5 Bootstrap, 1 jQuery UI">jQuery: 17. Modernizr: 6. Bootstrap: 5. jQuery UI: 1.</canvas>
+    </div>
+  </div>
+
 
   <hr>
 
@@ -244,7 +244,7 @@
 
   <h3>Methodology</h3>
   <p>Site lists were drawn from a Google Analytics report filtered to the statewide CA.gov tag over a 28-day window (July 1–28, 2026), yielding 1,227 hostname records. The dataset was then deduplicated and numeric-only entries — likely IP addresses rather than named web properties — were removed, leaving 1,115 hostnames.</p>
-  <p>The scanner was run only on the top 155 sites by traffic volume. For each of those hostnames, a [Python script](git) crawled the site and inspected HTTP response headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only sites returning HTTP 200 could be fingerprinted; sites blocked (403), redirecting, or unreachable were marked accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
+  <p>The scanner was run only on the top 155 sites by traffic volume. For each of those hostnames, a <a href="https://github.com/zakiya/2026-ca-foss-audit"> Python script</a> crawled the site and inspected HTTP response headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only sites returning HTTP 200 could be fingerprinted; sites blocked (403), redirecting, or unreachable were marked accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
   <p>Because coverage depends on adoption of the statewide GA tag, sites that do not use it — including some agency microsites and third-party-hosted portals — are not represented in this dataset.</p>
 
   <h3>Dataset: Column Descriptions</h3>
@@ -360,6 +360,28 @@ new Chart(document.getElementById('chart3'), {
     indexAxis: 'y',
     responsive: true, maintainAspectRatio: false,
     plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} sites` } } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } }, beginAtZero: true },
+      y: { grid: { display: false }, ticks: { color: labelColor, font: { size: 12 } } }
+    }
+  }
+});
+
+new Chart(document.getElementById('chart4'), {
+  type: 'bar',
+  data: {
+    labels: ['jQuery', 'Modernizr', 'Bootstrap', 'jQuery UI'],
+    datasets: [{
+      data: [17, 6, 5, 1],
+      backgroundColor: '#1baf7a',
+      borderRadius: 4,
+      borderSkipped: 'left'
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} of 23 ASP.NET sites` } } },
     scales: {
       x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } }, beginAtZero: true },
       y: { grid: { display: false }, ticks: { color: labelColor, font: { size: 12 } } }
