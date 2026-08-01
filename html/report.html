@@ -1,402 +1,479 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 California Open Source Audit</title>
-<style>
-  :root {
-    --color-background: #fffff;
-    --color-body: #1a1a1a;
-    --color-heading: #4b4bb2;
-    --color-open: #4b4bb2;
-    --color-proprietary: #fd7e14;
-    --color-unresolved: #6c757d;
-    --serif: "Noto Serif", serif;
-    --sans: "Public Sans", sans-serif;
-    --gray-100: #f8f9fa;
-    --gray-300: #dee2e6;
-    --gray-border: #adb5bd;
-    --gray-600: #6c757d;
-    --gray-800: #343a40;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 California Open Source Audit</title>
+  <style>
+    :root {
+      --border-raduis: 12px;
+      --color-background: #fffff;
+      --color-body: #1a1a1a;
+      --color-heading: #4b4bb2;
+      --color-open: #4b4bb2;
+      --color-proprietary: #fd7e14;
+      --color-unresolved: #6c757d;
+      --serif: "Noto Serif", serif;
+      --sans: "Public Sans", sans-serif;
+      --gray-100: #f8f9fa;
+      --gray-300: #dee2e6;
+      --gray-border: #adb5bd;
+      --gray-600: #6c757d;
+      --gray-800: #343a40;
+    }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.7;
-    color: var(--color-body);
-    background: var(--color-background);
-    padding: 3rem 1.5rem;
-  }
-  .page {
-    max-width: 760px;
-    margin: 0 auto;
-    background: var(--color-background);
-    border: 0.5px solid var(--color-body);
-    border-radius: 12px;
-    padding: 3rem 3.5rem;
-  }
-  .kicker {
-    font-size: 13px;
-    color: var(--gray-800);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    margin-bottom: 0.5rem;
-  }
-  h1 {
-    font-size: 26px;
-    font-weight: 500;
-    line-height: 1.3;
-    color: var(--color-body);
-    margin-bottom: 0.25rem;
-  }
-  .meta {
-    font-size: 14px;
-    color: var(--gray-800);
-    margin-bottom: 1.25rem;
-  }
-  h2 {
-    font-size: 17px;
-    font-weight: 500;
-    color: var(--color-body);
-    margin: 2.5rem 0 0.75rem;
-  }
-  h3 {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--gray-600);
-    margin: 1.5rem 0 0.25rem;
-  }
-  h4 {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--gray-800);
-    margin: 1.25rem 0 0.25rem;
-  }
-  p { margin-bottom: 1rem; color: var(--color-body); }
-  a { color: var(--color-heading); }
-  .toc {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0;
-    font-size: 13px;
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 0.5px solid var(--gray-border);
-  }
-  .toc a {
-    color: var(--gray-600);
-    text-decoration: none;
-  }
-  .toc a:hover { color: var(--color-open); }
-  .toc span.sep {
-    color: var(--gray-300);
-    margin: 0 0.6rem;
-  }
-  p:last-child { margin-bottom: 0; }
-  ul { margin: 0.5rem 0 1rem 1.25rem; }
-  li { margin-bottom: 0.35rem; color: var(--gray-600); }
-  code {
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 13px;
-    background: var(--gray-300);
-    padding: 1px 5px;
-    border-radius: 4px;
-    color: var(--gray-800);
-  }
-  hr {
-    border: none;
-    border-top: 0.5px solid var(--gray-border);
-    margin: 2.5rem 0;
-  }
-  .badge {
-    display: inline-block;
-    font-size: 11px;
-    font-weight: 500;
-    padding: 2px 8px;
-    border-radius: 4px;
-  }
-  .badge-oss { background: var(--gray-300); color: var(--color-open); }
-  .badge-prop { background: var(--gray-300); color: var(--color-proprietary); }
-  .chart-label {
-    font-size: 13px;
-    color: var(--gray-800);
-    margin-bottom: 2px;
-  }
-  .chart-sublabel {
-    font-size: 11px;
-    color: var(--gray-600);
-    margin-bottom: 12px;
-  }
-  .chart-wrap {
-    position: relative;
-    width: 100%;
-  }
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 10px;
-    font-size: 12px;
-    color: var(--gray-600);
-  }
-  .legend span {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .swatch {
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    flex-shrink: 0;
-  }
-  .chart-full { margin: 1.5rem 0; }
-  @media (max-width: 600px) {
-    .page { padding: 1.5rem; }
-  }
-  .key-finding {
-    background: var(--gray-100);
-    padding: 1rem;
-    border-radius: 4px;
-    margin-bottom: 3rem;
-  }
-</style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.7;
+      color: var(--color-body);
+      background: var(--color-background);
+      padding: 3rem 1.5rem;
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      background: var(--color-background);
+      border: 0.5px solid var(--color-body);
+      border-radius: var(--border-raduis);
+      padding: 3rem 2rem;
+    }
+
+    .kicker {
+      font-size: 13px;
+      color: var(--gray-800);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 500;
+      line-height: 1.3;
+      color: var(--color-body);
+      margin-bottom: 0.25rem;
+    }
+
+    .meta {
+      font-size: 14px;
+      color: var(--gray-800);
+      margin-bottom: 1.25rem;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--gray-800);
+      margin: 2.5rem 0 0.75rem;
+    }
+
+    h3 {
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--gray-800);
+      margin: 1.5rem 0 0.25rem;
+    }
+
+    h4 {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--gray-800);
+      margin: 1.25rem 0 0.25rem;
+    }
+
+    p {
+      margin-bottom: 1rem;
+      color: var(--color-body);
+    }
+
+    a {
+      color: var(--color-heading);
+    }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 0;
+      font-size: 13px;
+      margin-bottom: 2.5rem;
+      padding-bottom: 2rem;
+      border-bottom: 0.5px solid var(--gray-border);
+    }
+
+    .toc a {
+      color: var(--gray-600);
+      text-decoration: none;
+    }
+
+    .toc a:hover {
+      color: var(--color-open);
+    }
+
+    .toc span.sep {
+      color: var(--gray-300);
+      margin: 0 0.6rem;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin: 0.5rem 0 1rem 1.25rem;
+    }
+
+    li {
+      margin-bottom: 0.35rem;
+      color: var(--gray-600);
+    }
+
+    code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 13px;
+      background: var(--gray-300);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: var(--gray-800);
+    }
+
+    hr {
+      border: none;
+      border-top: 0.5px solid var(--gray-border);
+      margin: 2.5rem 0;
+    }
+
+    .chart-label {
+      font-size: 13px;
+      color: var(--gray-800);
+      margin-bottom: 2px;
+    }
+
+    .chart-sublabel {
+      font-size: 11px;
+      color: var(--gray-600);
+      margin-bottom: 12px;
+    }
+
+    .chart-count {
+      font-size: 11px;
+      color: var(--gray-600);
+      text-align: right;
+    }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+    }
+
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--gray-600);
+    }
+
+    .legend span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .chart-full {
+      margin: 1.5rem 0 1rem;
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 1.5rem;
+      }
+    }
+
+    .key-finding {
+      background-color: var(--gray-100);
+      padding: 2rem;
+      border-radius: var(--border-raduis);
+      margin-bottom: 3rem;
+      border: 0.5px solid var(--gray-border);
+    }
+  </style>
 </head>
 <body>
 <div class="page">
 
   <p class="kicker">Zakiya Khabir</p>
   <h1>2026 California Web Technology Audit</h1>
-  <p class="meta">July 2026 · <a href="audit.csv">Download the raw findings (audit.csv)</a> · <a href="https://github.com/zakiya/2026-ca-foss-audit">Source on GitHub</a></p>
+  <p class="meta">July 2026 · <a href="audit.csv">Download the raw findings (audit.csv)</a> · <a
+    href="https://github.com/zakiya/2026-ca-foss-audit">Source on GitHub</a></p>
 
   <nav class="toc">
-    <a href="#overview">Overview</a><span class="sep">/</span><a href="#key-findings">Key findings</a><span class="sep">/</span><a href="#details">Details</a>
+    <a href="#overview">Overview</a><span class="sep">/</span><a href="#key-findings">Key findings</a><span class="sep">/</span><a
+    href="#details">Details</a>
   </nav>
 
   <h2 id="overview">Overview</h2>
-  <p>Audit of California government web hostnames. Data was collected by from Google Analytics and crawling each hostname. The 155 sites with the highest traffic were scanned.</p>
-
-  <hr>
+  <p>Audit of California government web hostnames. Data was collected by from Google Analytics and crawling each
+    hostname. The 155 sites with the highest traffic were scanned.</p>
 
   <h2 id="key-findings">Key findings</h2>
-
   <div class="key-finding">
-  <p>1. Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) and <strong>27 run proprietary platforms</strong> (33%).</p>
+    <p>Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) and
+      <strong>27 run proprietary platforms</strong> (33%).</p>
 
-  <div class="chart-full">
-    <p class="chart-label">Results of 155 scanned sites</p>
-    <p class="chart-sublabel">959 additional sites not scanned</p>
-    <div class="chart-wrap" style="height:220px;">
-      <canvas id="chart1" role="img" aria-label="Bar chart: of 155 scanned sites, 56 are open source, 27 proprietary, 72 unresolved">56 open source, 27 proprietary, 72 unresolved.</canvas>
+    <div class="chart-full">
+      <p class="chart-label">Results of 155 scanned sites</p>
+      <p class="chart-sublabel">959 additional sites not scanned</p>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chart1" role="img"
+                aria-label="Bar chart: of 155 scanned sites, 56 are open source, 27 proprietary, 72 unresolved">56 open
+          source, 27 proprietary, 72 unresolved.
+        </canvas>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--color-open)"></span>Open source 36%</span>
+        <span><span class="swatch" style="background:var(--color-proprietary)"></span>Proprietary 17%</span>
+        <span><span class="swatch" style="background:var(--color-unresolved)"></span>Unresolved 46%</span>
+      </div>
     </div>
-    <div class="legend">
-      <span><span class="swatch" style="background:var(--color-open)"></span>Open source 36%</span>
-      <span><span class="swatch" style="background:var(--color-proprietary)"></span>Proprietary 17%</span>
-      <span><span class="swatch" style="background:var(--color-unresolved)"></span>Unresolved 46%</span>
-    </div>
-  </div>
-  </div>
-  <div class="key-finding">
-
-  <p>2. However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source platforms</strong>.</p>
-
-  <div class="chart-full">
-    <p class="chart-label">Page views by platform type</p>
-    <p class="chart-sublabel">Scanned sites only · July 1–28, 2026</p>
-    <div class="chart-wrap" style="height:220px;">
-      <canvas id="chart2" role="img" aria-label="Bar chart: proprietary sites received 195M views, open source 16.6M, unresolved 89M">Proprietary: 195M. Open source: 16.6M. Unresolved: 89M.</canvas>
-    </div>
-    <div class="legend">
-      <span><span class="swatch" style="background:var(--color-open)"></span>Open source</span>
-      <span><span class="swatch" style="background:var(--color-proprietary)"></span>Proprietary</span>
-      <span><span class="swatch" style="background:var(--color-unresolved)"></span>Unresolved</span>
-    </div>
-  </div>
+    <div class=chart-count>1/4</div>
   </div>
   <div class="key-finding">
+    <p>However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary
+      platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source
+      platforms</strong>.</p>
 
-
-  <p" >3. WordPress is the most popular platform.</p>
-
-  <div class="chart-full">
-    <p class="chart-label">Platform breakdown — scanned sites with detected stack</p>
-    <p class="chart-sublabel">83 of 155 scanned sites · by number of hostnames</p>
-    <div class="chart-wrap" style="height:220px;">
-      <canvas id="chart3" role="img" aria-label="Horizontal bar chart: WordPress 51, ASP.NET 23, Joomla 4, Sitecore 3, Drupal 1, Granicus 1">WordPress: 51. ASP.NET: 23. Joomla: 4. Sitecore: 3. Drupal: 1. Granicus: 1.</canvas>
+    <div class="chart-full">
+      <p class="chart-label">Page views by platform type</p>
+      <p class="chart-sublabel">Scanned sites only · July 1–28, 2026</p>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chart2" role="img"
+                aria-label="Bar chart: proprietary sites received 195M views, open source 16.6M, unresolved 89M">
+          Proprietary: 195M. Open source: 16.6M. Unresolved: 89M.
+        </canvas>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--color-open)"></span>Open source</span>
+        <span><span class="swatch" style="background:var(--color-proprietary)"></span>Proprietary</span>
+        <span><span class="swatch" style="background:var(--color-unresolved)"></span>Unresolved</span>
+      </div>
     </div>
-    <div class="legend">
-      <span><span class="swatch" style="background:var(--color-open)"></span>Open source</span>
-      <span><span class="swatch" style="background:var(--color-proprietary);"></span>Proprietary</span>
+    <div class="chart-count">2/4</div>
+  </div>
+  <div class="key-finding">
+    <p>WordPress is the most popular platform.</p>
+    <div class="chart-full">
+      <p class="chart-label">Platform breakdown — scanned sites with detected stack</p>
+      <p class="chart-sublabel">83 of 155 scanned sites · by number of hostnames</p>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chart3" role="img"
+                aria-label="Horizontal bar chart: WordPress 51, ASP.NET 23, Joomla 4, Sitecore 3, Drupal 1, Granicus 1">
+          WordPress: 51. ASP.NET: 23. Joomla: 4. Sitecore: 3. Drupal: 1. Granicus: 1.
+        </canvas>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:var(--color-open)"></span>Open source</span>
+        <span><span class="swatch" style="background:var(--color-proprietary);"></span>Proprietary</span>
+      </div>
     </div>
+    <div class="chart-count">3/4</div>
   </div>
-  </div>
- <div class="key-finding">
-
-
-<p>4. Even when the platform is proprietary, open source is embedded in the front end. 17 of the 23 ASP.NET sites ship jQuery, 6 use Modernizr, 5 use Bootstrap, and 1 uses jQuery UI.</p>
-
-  <div class="chart-full">
-    <p class="chart-label">Open-source JavaScript libraries on proprietary ASP.NET sites</p>
-    <p class="chart-sublabel">17 of 23 ASP.NET sites (74%) use at least one open-source library</p>
-    <div class="chart-wrap" style="height:190px;">
-      <canvas id="chart4" role="img" aria-label="Horizontal bar chart: of 23 ASP.NET sites, 17 use jQuery, 6 Modernizr, 5 Bootstrap, 1 jQuery UI">jQuery: 17. Modernizr: 6. Bootstrap: 5. jQuery UI: 1.</canvas>
+  <div class="key-finding">
+    <p>Even when the platform is proprietary, open source is embedded in the front end. 17 of the 23 ASP.NET sites
+      ship jQuery, 6 use Modernizr, 5 use Bootstrap, and 1 uses jQuery UI.</p>
+    <div class="chart-full">
+      <p class="chart-label">Open-source JavaScript libraries on proprietary ASP.NET sites</p>
+      <p class="chart-sublabel">17 of 23 ASP.NET sites (74%) use at least one open-source library</p>
+      <div class="chart-wrap" style="height:190px;">
+        <canvas id="chart4" role="img"
+                aria-label="Horizontal bar chart: of 23 ASP.NET sites, 17 use jQuery, 6 Modernizr, 5 Bootstrap, 1 jQuery UI">
+          jQuery: 17. Modernizr: 6. Bootstrap: 5. jQuery UI: 1.
+        </canvas>
+      </div>
     </div>
-  </div>
+    <div class="chart-count">4/4</div>
 
- </div>
+  </div>
   <hr>
 
   <h2 id="details">Details</h2>
 
   <h3>Methodology</h3>
-  <p>Site lists were drawn from a Google Analytics report filtered to the statewide CA.gov tag over a 28-day window (July 1–28, 2026), yielding 1,227 hostname records. The dataset was then deduplicated and numeric-only entries — likely IP addresses rather than named web properties — were removed, leaving 1,115 hostnames.</p>
-  <p>The scanner was run only on the top 155 sites by traffic volume. For each of those hostnames, a <a href="https://github.com/zakiya/2026-ca-foss-audit"> Python script</a> crawled the site and inspected HTTP response headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only sites returning HTTP 200 could be fingerprinted; sites blocked (403), redirecting, or unreachable were marked accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
-  <p>Because coverage depends on adoption of the statewide GA tag, sites that do not use it — including some agency microsites and third-party-hosted portals — are not represented in this dataset.</p>
+  <p>Site lists were drawn from a Google Analytics report filtered to the statewide CA.gov tag over a 28-day window
+    (July 1–28, 2026). The original list had 1,227 hostname records. The dataset was then deduplicated and numeric-only entries were removed eaving 1,115 hostnames.
+    The numeric-only entries were likely IP addresses rather than named web properties.</p>
+  <p>The scanner ran on the top 155 sites by traffic volume. For each of those hostnames, a <a
+    href="https://github.com/zakiya/2026-ca-foss-audit"> Python script</a> crawled the site and inspected HTTP response
+    headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only
+    sites returning HTTP 200 could be fingerprinted. Blocked (403), redirecting, or unreachable sites were marked
+    accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
+  <p>Because coverage depends on adoption of the statewide GA tag, sites that do not use it are not represented in this dataset.</p>
 
-  <h3>Dataset: Column Descriptions</h3>
+  <h3>CSV column descriptions</h3>
+  <a href="audit.csv">Download (audit.csv)</a>
 
   <h4><code>hostname-cleaned</code></h4>
-  <p>The normalized domain or subdomain of a California government web property (e.g., <code>edd.ca.gov</code>, <code>dmv.ca.gov</code>). Includes production sites, staging environments, internal tools, and non-<code>.ca.gov</code> domains associated with state agencies.</p>
+  <p>The normalized domain or subdomain of a California government web site (e.g., <code>edd.ca.gov</code>, <code>dmv.ca.gov</code>).
 
   <h4><code>canonical-to-text</code></h4>
-  <p>The canonical URL the hostname resolves to, expressed as plain text. In most cases this matches <code>hostname-cleaned</code>; differences indicate redirects or aliasing.</p>
+  <p>The canonical URL the hostname resolves to, expressed as plain text.
 
   <h4><code>ga-total-views</code></h4>
-  <p>Total Google Analytics page views recorded for the hostname across the measurement period. Used as a proxy for public-facing traffic volume. Higher-traffic sites represent broader public impact.</p>
+  <p>Total Google Analytics page views recorded for the hostname across the measurement period. Used as a proxy for
+    public-facing traffic volume. Higher-traffic sites represent broader public impact.</p>
 
   <h4><code>techstack-status</code></h4>
-  <p>The HTTP status code returned when the hostname was crawled. A blank value means the scanner was not run on this hostname — only the top 155 sites by traffic were scanned. Common values for scanned sites:</p>
-  <ul>
-    <li><code>200</code> — site responded normally and was scanned</li>
-    <li><code>403</code> — access was blocked; platform could not be determined</li>
-    <li><code>307</code> — redirect (temporary)</li>
-    <li><code>none / error</code> — site was unreachable or returned an error</li>
-  </ul>
+  <p>The HTTP status code returned when the hostname was crawled. A blank value means the scanner was not run on this
+    hostname</p>
+
   <p>Only sites returning <code>200</code> could have their platform identified.</p>
 
   <h4><code>techstack-opensource-platform</code></h4>
   <p>Whether the detected platform is open source. Values:</p>
   <ul>
-    <li><code>yes</code> — confirmed open-source platform (e.g., WordPress, Joomla, Drupal)</li>
-    <li><code>no</code> — confirmed proprietary platform (e.g., ASP.NET, Sitecore, Granicus)</li>
+    <li><code>yes</code> — confirmed open-source platform</li>
+    <li><code>no</code> — confirmed proprietary platform </li>
     <li><code>unknown</code> — site was reachable but platform could not be identified</li>
     <li><code>error</code> — site was unreachable during scanning</li>
     <li><em>blank</em> — not scanned</li>
   </ul>
 
   <h4><code>techstack-platform</code></h4>
-  <p>The specific CMS or web platform detected. Examples include WordPress, ASP.NET (proprietary/custom), Joomla, Sitecore, Drupal, and Granicus/GovDelivery. Sites that returned a non-200 status or where detection was inconclusive are marked <code>undetermined</code>.</p>
+  <p>The specific CMS or web platform detected.  Sites that returned a non-200 status or where detection was inconclusive
+    are marked <code>undetermined</code>.</p>
 
   <h4><code>techstack-frameworks</code></h4>
-  <p>Third-party JavaScript libraries and tools detected on the page (e.g., jQuery, Bootstrap, Google Analytics, Google Tag Manager, YouTube Embed). Multiple values are separated by semicolons. Blank where none were detected or the site was not scanned.</p>
+  <p>Third-party JavaScript libraries and tools detected on the page. Blank where none were detected or the site
+    was not scanned.</p>
 
   <h3 id="notes">Notes</h3>
   <ul>
-    <li>Hostnames include staging, test, and internal environments in addition to public production sites; traffic figures help distinguish between them.</li>
-    <li>Only the top 155 hostnames by traffic were scanned; findings should not be generalized to all 1,115 hostnames in the dataset.</li>
-    <li>Findings should be interpreted at the hostname level, not the agency level — a single agency may operate multiple hostnames on different platforms.</li>
+    <li>Hostnames include staging, test, and internal environments in addition to public production sites; traffic
+      figures help distinguish between them.
+    </li>
+    <li>Only the top 155 hostnames by traffic were scanned; findings should not be generalized to all 1,115 hostnames in
+      the dataset.
+    </li>
+    <li>Findings should be interpreted at the hostname level, not the agency level — a single agency may operate
+      multiple hostnames on different platforms.
+    </li>
   </ul>
 
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-const gridColor = '#dee2e6'; //gray-300
-const tickColor = '#343a40'; //gray-800
-const labelColor = '#6c757d'; //gray-600
+  const gridColor = '#dee2e6'; //gray-300
+  const tickColor = '#343a40'; //gray-800
+  const labelColor = '#6c757d'; //gray-600
 
-new Chart(document.getElementById('chart1'), {
-  type: 'bar',
-  data: {
-    labels: ['Open source', 'Proprietary', 'Unresolved'],
-    datasets: [{
-      data: [56, 27, 72],
-      backgroundColor: ['#4b4bb2', '#fd7e14', '#343a40'],
-      borderRadius: 4,
-      borderSkipped: 'bottom'
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} sites` } } },
-    scales: {
-      x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 11 } } },
-      y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } }, beginAtZero: true }
-    }
-  }
-});
-
-new Chart(document.getElementById('chart2'), {
-  type: 'bar',
-  data: {
-    labels: ['Open source', 'Proprietary', 'Unresolved'],
-    datasets: [{
-      data: [16638328, 195653666, 89059910],
-      backgroundColor: ['#fd7e14', '#4b4bb2', '#343a40'],
-      borderRadius: 4,
-      borderSkipped: 'bottom'
-    }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${(ctx.raw/1e6).toFixed(1)}M views` } } },
-    scales: {
-      x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 11 } } },
-      y: {
-        grid: { color: gridColor },
-        ticks: { color: tickColor, font: { size: 11 }, callback: v => (v/1e6).toFixed(0) + 'M' },
-        beginAtZero: true
+  new Chart(document.getElementById('chart1'), {
+    type: 'bar',
+    data: {
+      labels: ['Open source', 'Proprietary', 'Unresolved'],
+      datasets: [{
+        data: [56, 27, 72],
+        backgroundColor: ['#4b4bb2', '#fd7e14', '#343a40'],
+        borderRadius: 4,
+        borderSkipped: 'bottom'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {legend: {display: false}, tooltip: {callbacks: {label: ctx => ` ${ctx.raw} sites`}}},
+      scales: {
+        x: {grid: {display: false}, ticks: {color: tickColor, font: {size: 11}}},
+        y: {grid: {color: gridColor}, ticks: {color: tickColor, font: {size: 11}}, beginAtZero: true}
       }
     }
-  }
-});
+  });
 
-new Chart(document.getElementById('chart3'), {
-  type: 'bar',
-  data: {
-    labels: ['WordPress', 'ASP.NET', 'Joomla', 'Sitecore', 'Drupal', 'Granicus'],
-    datasets: [{
-      data: [51, 23, 4, 3, 1, 1],
-      backgroundColor: ['#4b4bb2','#fd7e14','#4b4bb2','#fd7e14','#4b4bb2','#fd7e14'],
-      borderRadius: 4,
-      borderSkipped: 'left'
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} sites` } } },
-    scales: {
-      x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } }, beginAtZero: true },
-      y: { grid: { display: false }, ticks: { color: labelColor, font: { size: 12 } } }
+  new Chart(document.getElementById('chart2'), {
+    type: 'bar',
+    data: {
+      labels: ['Open source', 'Proprietary', 'Unresolved'],
+      datasets: [{
+        data: [16638328, 195653666, 89059910],
+        backgroundColor: ['#fd7e14', '#4b4bb2', '#343a40'],
+        borderRadius: 4,
+        borderSkipped: 'bottom'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {display: false},
+        tooltip: {callbacks: {label: ctx => ` ${(ctx.raw / 1e6).toFixed(1)}M views`}}
+      },
+      scales: {
+        x: {grid: {display: false}, ticks: {color: tickColor, font: {size: 11}}},
+        y: {
+          grid: {color: gridColor},
+          ticks: {color: tickColor, font: {size: 11}, callback: v => (v / 1e6).toFixed(0) + 'M'},
+          beginAtZero: true
+        }
+      }
     }
-  }
-});
+  });
 
-new Chart(document.getElementById('chart4'), {
-  type: 'bar',
-  data: {
-    labels: ['jQuery', 'Modernizr', 'Bootstrap', 'jQuery UI'],
-    datasets: [{
-      data: [17, 6, 5, 1],
-      backgroundColor: '#4b4bb2',
-      borderRadius: 4,
-      borderSkipped: 'left'
-    }]
-  },
-  options: {
-    indexAxis: 'y',
-    responsive: true, maintainAspectRatio: false,
-    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} of 23 ASP.NET sites` } } },
-    scales: {
-      x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } }, beginAtZero: true },
-      y: { grid: { display: false }, ticks: { color: labelColor, font: { size: 12 } } }
+  new Chart(document.getElementById('chart3'), {
+    type: 'bar',
+    data: {
+      labels: ['WordPress', 'ASP.NET', 'Joomla', 'Sitecore', 'Drupal', 'Granicus'],
+      datasets: [{
+        data: [51, 23, 4, 3, 1, 1],
+        backgroundColor: ['#4b4bb2', '#fd7e14', '#4b4bb2', '#fd7e14', '#4b4bb2', '#fd7e14'],
+        borderRadius: 4,
+        borderSkipped: 'left'
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {legend: {display: false}, tooltip: {callbacks: {label: ctx => ` ${ctx.raw} sites`}}},
+      scales: {
+        x: {grid: {color: gridColor}, ticks: {color: tickColor, font: {size: 11}}, beginAtZero: true},
+        y: {grid: {display: false}, ticks: {color: labelColor, font: {size: 12}}}
+      }
     }
-  }
-});
+  });
+
+  new Chart(document.getElementById('chart4'), {
+    type: 'bar',
+    data: {
+      labels: ['jQuery', 'Modernizr', 'Bootstrap', 'jQuery UI'],
+      datasets: [{
+        data: [17, 6, 5, 1],
+        backgroundColor: '#4b4bb2',
+        borderRadius: 4,
+        borderSkipped: 'left'
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: {legend: {display: false}, tooltip: {callbacks: {label: ctx => ` ${ctx.raw} of 23 ASP.NET sites`}}},
+      scales: {
+        x: {grid: {color: gridColor}, ticks: {color: tickColor, font: {size: 11}}, beginAtZero: true},
+        y: {grid: {display: false}, ticks: {color: labelColor, font: {size: 12}}}
+      }
+    }
+  });
 </script>
 </body>
 </html>
