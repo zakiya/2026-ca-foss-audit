@@ -310,7 +310,6 @@
   </div>
   <hr>
 
-
   <h2 id="methodology">Methodology</h2>
   <p>I created the hostname list from a Google Analytics report of sites using the statewide CA.gov tag over a 28-day window
     (July 1–28, 2026). The original list had 1,227 hostname records. The dataset was then deduplicated and numeric-only entries were removed leaving 1,115 hostnames.
@@ -321,15 +320,13 @@
     sites returning HTTP 200 could be fingerprinted. Blocked (403), redirecting, or unreachable sites were marked
     accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
 
-
   <h2 id="limitations">Limitations of this report</h2>
   <ul>
     <li>This dataset does not include sites that do not use the statewide Google Analytics tag.</li>
-    <li>Hostnames may include staging, test, and internal environments in addition to public production sites.
+    <li>Only the top 155 hostnames by traffic were scanned. Some of the scanned sites block automated traffic and could not be analyzed.</li>
+    <li>The Google Analytics list of 1227 hostnames includes staging, test, and internal environments. Those environments, have low traffic but some may still be included in the analysis.
     </li>
-    <li>Only the top 155 hostnames by traffic were scanned; findings should not be generalized.
-    </li>
-    <li>Findings should be interpreted at the hostname level, not the agency level — a single agency may operate
+    <li>Findings should be interpreted at the hostname level, not the agency level. A single agency may operate
       multiple hostnames on different platforms.
     </li>
   </ul>
