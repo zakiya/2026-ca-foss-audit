@@ -39,9 +39,7 @@
   .meta {
     font-size: 14px;
     color: #888780;
-    margin-bottom: 2.5rem;
-    padding-bottom: 2rem;
-    border-bottom: 0.5px solid #e1e0d9;
+    margin-bottom: 1.25rem;
   }
   h2 {
     font-size: 17px;
@@ -55,7 +53,32 @@
     color: #52514e;
     margin: 1.5rem 0 0.25rem;
   }
+  h4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: #888780;
+    margin: 1.25rem 0 0.25rem;
+  }
   p { margin-bottom: 1rem; color: #2c2c2a; }
+  a { color: #0f6e56; }
+  .toc {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0;
+    font-size: 13px;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 0.5px solid #e1e0d9;
+  }
+  .toc a {
+    color: #52514e;
+    text-decoration: none;
+  }
+  .toc a:hover { color: #0f6e56; }
+  .toc span.sep {
+    color: #d8d6cc;
+    margin: 0 0.6rem;
+  }
   p:last-child { margin-bottom: 0; }
   ul { margin: 0.5rem 0 1rem 1.25rem; }
   li { margin-bottom: 0.35rem; color: #2c2c2a; }
@@ -155,21 +178,25 @@
 
   <p class="kicker">TechCA · Free Open Source Software Group</p>
   <h1>2026 California Web Technology Audit</h1>
-  <p class="meta">July 2026</p>
+  <p class="meta">July 2026 · <a href="audit.csv">Download the raw findings (audit.csv)</a> · <a href="https://github.com/zakiya/2026-ca-foss-audit">Source on GitHub</a></p>
 
-  <h2>Overview</h2>
-  <p>This audit surveyed 1,115 California government web hostnames to assess platform adoption across state agencies. Data was collected by crawling each hostname, detecting its technology stack, and cross-referencing Google Analytics traffic figures.</p>
+  <nav class="toc">
+    <a href="#overview">Overview</a><span class="sep">/</span><a href="#key-findings">Key Findings</a><span class="sep">/</span><a href="#details">Details</a>
+  </nav>
 
-  <hr>
-
-  <h2>Methodology</h2>
-  <p>Site lists were drawn from a Google Analytics report filtered to the statewide CA.gov tag over a 28-day window (July 1–28, 2026), yielding 1,227 hostname records. The dataset was then deduplicated and numeric-only entries — likely IP addresses rather than named web properties — were removed, leaving 1,115 hostnames.</p>
-  <p>The scanner was run only on the top 155 sites by traffic volume. For each of those hostnames, a Python script (to be published on GitHub) crawled the site and inspected HTTP response headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only sites returning HTTP 200 could be fingerprinted; sites blocked (403), redirecting, or unreachable were marked accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
-  <p>Because coverage depends on adoption of the statewide GA tag, sites that do not use it — including some agency microsites and third-party-hosted portals — are not represented in this dataset.</p>
+  <h2 id="overview">Overview</h2>
+  <p>Audit of California government web hostnames. Data was collected by from Google Analytics and crawling each hostname. The 115 sites with the highest traffic were scanned.</p>
 
   <hr>
 
-  <h2>Key Findings</h2>
+  <h2 id="key-findings">Key Findings</h2>
+
+  <p>Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) and <strong>27 run proprietary platforms</strong> (33%).</p>
+
+  <p>However, traffic is skewed toward proprietary platforms. Across all identifiable sites, <strong> proprietary platforms account for roughly 195 million views</strong> compared to <strong> 16 million for open-source platforms</strong>.</p>
+
+  <p>Its also worth noting that nearly all of the proprietary sites, use some kind of open source framework or library like Bootstrap. </p>
+
 
   <div class="charts-grid">
     <div class="chart-block">
@@ -210,40 +237,28 @@
     </div>
   </div>
 
-  <p>Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) — predominantly WordPress — and <strong>27 run proprietary platforms</strong> (33%) — predominantly ASP.NET.</p>
-
-  <p><strong>Traffic is skewed toward proprietary platforms.</strong> The highest-traffic sites — ca.gov (130M views) and edd.ca.gov (43M views) — both run ASP.NET. Across all identifiable sites, proprietary platforms account for roughly 195 million views compared to 16 million for open-source platforms. This gap reflects that the state's highest-volume transactional sites have not yet migrated to open-source alternatives.</p>
-
-  <p><strong>WordPress is the dominant open-source platform</strong>, used across 51 agencies ranging from small boards (e.g., <code>bbs.ca.gov</code>) to high-profile sites (e.g., <code>gov.ca.gov</code>, <code>cannabis.ca.gov</code>). Joomla and Drupal have limited but active adoption.</p>
-
-  <table>
-    <thead>
-      <tr><th>Platform</th><th>Sites</th><th>Type</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>WordPress</td><td>51</td><td><span class="badge badge-oss">Open source</span></td></tr>
-      <tr><td>ASP.NET (proprietary/custom)</td><td>23</td><td><span class="badge badge-prop">Proprietary</span></td></tr>
-      <tr><td>Joomla</td><td>4</td><td><span class="badge badge-oss">Open source</span></td></tr>
-      <tr><td>Sitecore</td><td>3</td><td><span class="badge badge-prop">Proprietary</span></td></tr>
-      <tr><td>Drupal</td><td>1</td><td><span class="badge badge-oss">Open source</span></td></tr>
-      <tr><td>Granicus / GovDelivery</td><td>1</td><td><span class="badge badge-prop">Proprietary</span></td></tr>
-    </tbody>
-  </table>
 
   <hr>
 
-  <h2>Dataset: Column Descriptions</h2>
+  <h2 id="details">Details</h2>
 
-  <h3><code>hostname-cleaned</code></h3>
+  <h3>Methodology</h3>
+  <p>Site lists were drawn from a Google Analytics report filtered to the statewide CA.gov tag over a 28-day window (July 1–28, 2026), yielding 1,227 hostname records. The dataset was then deduplicated and numeric-only entries — likely IP addresses rather than named web properties — were removed, leaving 1,115 hostnames.</p>
+  <p>The scanner was run only on the top 155 sites by traffic volume. For each of those hostnames, a [Python script](git) crawled the site and inspected HTTP response headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only sites returning HTTP 200 could be fingerprinted; sites blocked (403), redirecting, or unreachable were marked accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
+  <p>Because coverage depends on adoption of the statewide GA tag, sites that do not use it — including some agency microsites and third-party-hosted portals — are not represented in this dataset.</p>
+
+  <h3>Dataset: Column Descriptions</h3>
+
+  <h4><code>hostname-cleaned</code></h4>
   <p>The normalized domain or subdomain of a California government web property (e.g., <code>edd.ca.gov</code>, <code>dmv.ca.gov</code>). Includes production sites, staging environments, internal tools, and non-<code>.ca.gov</code> domains associated with state agencies.</p>
 
-  <h3><code>canonical-to-text</code></h3>
+  <h4><code>canonical-to-text</code></h4>
   <p>The canonical URL the hostname resolves to, expressed as plain text. In most cases this matches <code>hostname-cleaned</code>; differences indicate redirects or aliasing.</p>
 
-  <h3><code>ga-total-views</code></h3>
+  <h4><code>ga-total-views</code></h4>
   <p>Total Google Analytics page views recorded for the hostname across the measurement period. Used as a proxy for public-facing traffic volume. Higher-traffic sites represent broader public impact.</p>
 
-  <h3><code>techstack-status</code></h3>
+  <h4><code>techstack-status</code></h4>
   <p>The HTTP status code returned when the hostname was crawled. A blank value means the scanner was not run on this hostname — only the top 155 sites by traffic were scanned. Common values for scanned sites:</p>
   <ul>
     <li><code>200</code> — site responded normally and was scanned</li>
@@ -253,7 +268,7 @@
   </ul>
   <p>Only sites returning <code>200</code> could have their platform identified.</p>
 
-  <h3><code>techstack-opensource-platform</code></h3>
+  <h4><code>techstack-opensource-platform</code></h4>
   <p>Whether the detected platform is open source. Values:</p>
   <ul>
     <li><code>yes</code> — confirmed open-source platform (e.g., WordPress, Joomla, Drupal)</li>
@@ -263,15 +278,13 @@
     <li><em>blank</em> — not scanned</li>
   </ul>
 
-  <h3><code>techstack-platform</code></h3>
+  <h4><code>techstack-platform</code></h4>
   <p>The specific CMS or web platform detected. Examples include WordPress, ASP.NET (proprietary/custom), Joomla, Sitecore, Drupal, and Granicus/GovDelivery. Sites that returned a non-200 status or where detection was inconclusive are marked <code>undetermined</code>.</p>
 
-  <h3><code>techstack-frameworks</code></h3>
+  <h4><code>techstack-frameworks</code></h4>
   <p>Third-party JavaScript libraries and tools detected on the page (e.g., jQuery, Bootstrap, Google Analytics, Google Tag Manager, YouTube Embed). Multiple values are separated by semicolons. Blank where none were detected or the site was not scanned.</p>
 
-  <hr>
-
-  <h2>Notes</h2>
+  <h3 id="notes">Notes</h3>
   <ul>
     <li>Hostnames include staging, test, and internal environments in addition to public production sites; traffic figures help distinguish between them.</li>
     <li>Only the top 155 hostnames by traffic were scanned; findings should not be generalized to all 1,115 hostnames in the dataset.</li>
