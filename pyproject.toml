@@ -1,0 +1,8 @@
+[project]
+name = "2026-ca-foss-audit"
+version = "0.1.0"
+description = "Classify websites by CMS/platform and flag open-source vs proprietary software"
+requires-python = ">=3.9"
+dependencies = [
+    "requests>=2.31",
+]

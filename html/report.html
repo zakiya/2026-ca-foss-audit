@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 California Web Technology Audit</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+    color: #1a1a18;
+    background: #fafaf8;
+    padding: 3rem 1.5rem;
+  }
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    background: #fff;
+    border: 0.5px solid #e1e0d9;
+    border-radius: 12px;
+    padding: 3rem 3.5rem;
+  }
+  .kicker {
+    font-size: 13px;
+    color: #888780;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.3;
+    color: #0b0b0b;
+    margin-bottom: 0.25rem;
+  }
+  .meta {
+    font-size: 14px;
+    color: #888780;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 0.5px solid #e1e0d9;
+  }
+  h2 {
+    font-size: 17px;
+    font-weight: 500;
+    color: #0b0b0b;
+    margin: 2.5rem 0 0.75rem;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: #52514e;
+    margin: 1.5rem 0 0.25rem;
+  }
+  p { margin-bottom: 1rem; color: #2c2c2a; }
+  p:last-child { margin-bottom: 0; }
+  ul { margin: 0.5rem 0 1rem 1.25rem; }
+  li { margin-bottom: 0.35rem; color: #2c2c2a; }
+  code {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    background: #f1efe8;
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: #52514e;
+  }
+  hr {
+    border: none;
+    border-top: 0.5px solid #e1e0d9;
+    margin: 2.5rem 0;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 1rem 0 1.5rem;
+  }
+  th {
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    color: #888780;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 8px 12px;
+    border-bottom: 0.5px solid #e1e0d9;
+  }
+  td {
+    padding: 8px 12px;
+    border-bottom: 0.5px solid #f1efe8;
+    color: #2c2c2a;
+  }
+  tr:last-child td { border-bottom: none; }
+  .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .badge-oss { background: #e1f5ee; color: #0f6e56; }
+  .badge-prop { background: #faece7; color: #993c1d; }
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 1.5rem 0;
+  }
+  .chart-block { }
+  .chart-label {
+    font-size: 13px;
+    color: #888780;
+    margin-bottom: 2px;
+  }
+  .chart-sublabel {
+    font-size: 11px;
+    color: #b4b2a9;
+    margin-bottom: 12px;
+  }
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #52514e;
+  }
+  .legend span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex-shrink: 0;
+  }
+  .chart-full { margin: 1.5rem 0; }
+  @media (max-width: 600px) {
+    .page { padding: 1.5rem; }
+    .charts-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="kicker">TechCA · Free Open Source Software Group</p>
+  <h1>2026 California Web Technology Audit</h1>
+  <p class="meta">July 2026</p>
+
+  <h2>Overview</h2>
+  <p>This audit surveyed 1,115 California government web hostnames to assess platform adoption across state agencies. Data was collected by crawling each hostname, detecting its technology stack, and cross-referencing Google Analytics traffic figures.</p>
+
+  <hr>
+
+  <h2>Methodology</h2>
+  <p>Site lists were drawn from a Google Analytics report filtered to the statewide CA.gov tag over a 28-day window (July 1–28, 2026), yielding 1,227 hostname records. The dataset was then deduplicated and numeric-only entries — likely IP addresses rather than named web properties — were removed, leaving 1,115 hostnames.</p>
+  <p>The scanner was run only on the top 155 sites by traffic volume. For each of those hostnames, a Python script (to be published on GitHub) crawled the site and inspected HTTP response headers and HTML source to identify the underlying platform and classify it as open source or proprietary. Only sites returning HTTP 200 could be fingerprinted; sites blocked (403), redirecting, or unreachable were marked accordingly. The remaining 959 hostnames were not scanned and have no platform classification.</p>
+  <p>Because coverage depends on adoption of the statewide GA tag, sites that do not use it — including some agency microsites and third-party-hosted portals — are not represented in this dataset.</p>
+
+  <hr>
+
+  <h2>Key Findings</h2>
+
+  <div class="charts-grid">
+    <div class="chart-block">
+      <p class="chart-label">Results of 155 scanned sites</p>
+      <p class="chart-sublabel">959 additional sites not scanned</p>
+      <div class="chart-wrap" style="height:190px;">
+        <canvas id="chart1" role="img" aria-label="Bar chart: of 155 scanned sites, 56 are open source, 27 proprietary, 72 unresolved">56 open source, 27 proprietary, 72 unresolved.</canvas>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#1baf7a"></span>Open source 36%</span>
+        <span><span class="swatch" style="background:#eb6834"></span>Proprietary 17%</span>
+        <span><span class="swatch" style="background:#888780"></span>Unresolved 46%</span>
+      </div>
+    </div>
+    <div class="chart-block">
+      <p class="chart-label">Page views by platform type</p>
+      <p class="chart-sublabel">Scanned sites only · July 1–28, 2026</p>
+      <div class="chart-wrap" style="height:190px;">
+        <canvas id="chart2" role="img" aria-label="Bar chart: proprietary sites received 195M views, open source 16.6M, unresolved 89M">Proprietary: 195M. Open source: 16.6M. Unresolved: 89M.</canvas>
+      </div>
+      <div class="legend">
+        <span><span class="swatch" style="background:#1baf7a"></span>Open source</span>
+        <span><span class="swatch" style="background:#eb6834"></span>Proprietary</span>
+        <span><span class="swatch" style="background:#888780"></span>Unresolved</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="chart-full">
+    <p class="chart-label">Platform breakdown — scanned sites with detected stack</p>
+    <p class="chart-sublabel">83 of 155 scanned sites · by number of hostnames</p>
+    <div class="chart-wrap" style="height:220px;">
+      <canvas id="chart3" role="img" aria-label="Horizontal bar chart: WordPress 51, ASP.NET 23, Joomla 4, Sitecore 3, Drupal 1, Granicus 1">WordPress: 51. ASP.NET: 23. Joomla: 4. Sitecore: 3. Drupal: 1. Granicus: 1.</canvas>
+    </div>
+    <div class="legend">
+      <span><span class="swatch" style="background:#1baf7a"></span>Open source</span>
+      <span><span class="swatch" style="background:#eb6834"></span>Proprietary</span>
+    </div>
+  </div>
+
+  <p>Of the 83 scanned sites with an identifiable platform, <strong>56 run open-source platforms</strong> (67%) — predominantly WordPress — and <strong>27 run proprietary platforms</strong> (33%) — predominantly ASP.NET.</p>
+
+  <p><strong>Traffic is skewed toward proprietary platforms.</strong> The highest-traffic sites — ca.gov (130M views) and edd.ca.gov (43M views) — both run ASP.NET. Across all identifiable sites, proprietary platforms account for roughly 195 million views compared to 16 million for open-source platforms. This gap reflects that the state's highest-volume transactional sites have not yet migrated to open-source alternatives.</p>
+
+  <p><strong>WordPress is the dominant open-source platform</strong>, used across 51 agencies ranging from small boards (e.g., <code>bbs.ca.gov</code>) to high-profile sites (e.g., <code>gov.ca.gov</code>, <code>cannabis.ca.gov</code>). Joomla and Drupal have limited but active adoption.</p>
+
+  <table>
+    <thead>
+      <tr><th>Platform</th><th>Sites</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>WordPress</td><td>51</td><td><span class="badge badge-oss">Open source</span></td></tr>
+      <tr><td>ASP.NET (proprietary/custom)</td><td>23</td><td><span class="badge badge-prop">Proprietary</span></td></tr>
+      <tr><td>Joomla</td><td>4</td><td><span class="badge badge-oss">Open source</span></td></tr>
+      <tr><td>Sitecore</td><td>3</td><td><span class="badge badge-prop">Proprietary</span></td></tr>
+      <tr><td>Drupal</td><td>1</td><td><span class="badge badge-oss">Open source</span></td></tr>
+      <tr><td>Granicus / GovDelivery</td><td>1</td><td><span class="badge badge-prop">Proprietary</span></td></tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <h2>Dataset: Column Descriptions</h2>
+
+  <h3><code>hostname-cleaned</code></h3>
+  <p>The normalized domain or subdomain of a California government web property (e.g., <code>edd.ca.gov</code>, <code>dmv.ca.gov</code>). Includes production sites, staging environments, internal tools, and non-<code>.ca.gov</code> domains associated with state agencies.</p>
+
+  <h3><code>canonical-to-text</code></h3>
+  <p>The canonical URL the hostname resolves to, expressed as plain text. In most cases this matches <code>hostname-cleaned</code>; differences indicate redirects or aliasing.</p>
+
+  <h3><code>ga-total-views</code></h3>
+  <p>Total Google Analytics page views recorded for the hostname across the measurement period. Used as a proxy for public-facing traffic volume. Higher-traffic sites represent broader public impact.</p>
+
+  <h3><code>techstack-status</code></h3>
+  <p>The HTTP status code returned when the hostname was crawled. A blank value means the scanner was not run on this hostname — only the top 155 sites by traffic were scanned. Common values for scanned sites:</p>
+  <ul>
+    <li><code>200</code> — site responded normally and was scanned</li>
+    <li><code>403</code> — access was blocked; platform could not be determined</li>
+    <li><code>307</code> — redirect (temporary)</li>
+    <li><code>none / error</code> — site was unreachable or returned an error</li>
+  </ul>
+  <p>Only sites returning <code>200</code> could have their platform identified.</p>
+
+  <h3><code>techstack-opensource-platform</code></h3>
+  <p>Whether the detected platform is open source. Values:</p>
+  <ul>
+    <li><code>yes</code> — confirmed open-source platform (e.g., WordPress, Joomla, Drupal)</li>
+    <li><code>no</code> — confirmed proprietary platform (e.g., ASP.NET, Sitecore, Granicus)</li>
+    <li><code>unknown</code> — site was reachable but platform could not be identified</li>
+    <li><code>error</code> — site was unreachable during scanning</li>
+    <li><em>blank</em> — not scanned</li>
+  </ul>
+
+  <h3><code>techstack-platform</code></h3>
+  <p>The specific CMS or web platform detected. Examples include WordPress, ASP.NET (proprietary/custom), Joomla, Sitecore, Drupal, and Granicus/GovDelivery. Sites that returned a non-200 status or where detection was inconclusive are marked <code>undetermined</code>.</p>
+
+  <h3><code>techstack-frameworks</code></h3>
+  <p>Third-party JavaScript libraries and tools detected on the page (e.g., jQuery, Bootstrap, Google Analytics, Google Tag Manager, YouTube Embed). Multiple values are separated by semicolons. Blank where none were detected or the site was not scanned.</p>
+
+  <hr>
+
+  <h2>Notes</h2>
+  <ul>
+    <li>Hostnames include staging, test, and internal environments in addition to public production sites; traffic figures help distinguish between them.</li>
+    <li>Only the top 155 hostnames by traffic were scanned; findings should not be generalized to all 1,115 hostnames in the dataset.</li>
+    <li>Findings should be interpreted at the hostname level, not the agency level — a single agency may operate multiple hostnames on different platforms.</li>
+  </ul>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+const gridColor = '#e1e0d9';
+const tickColor = '#888780';
+const labelColor = '#52514e';
+
+new Chart(document.getElementById('chart1'), {
+  type: 'bar',
+  data: {
+    labels: ['Open source', 'Proprietary', 'Unresolved'],
+    datasets: [{
+      data: [56, 27, 72],
+      backgroundColor: ['#1baf7a', '#eb6834', '#888780'],
+      borderRadius: 4,
+      borderSkipped: 'bottom'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} sites` } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 11 } } },
+      y: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } }, beginAtZero: true }
+    }
+  }
+});
+
+new Chart(document.getElementById('chart2'), {
+  type: 'bar',
+  data: {
+    labels: ['Open source', 'Proprietary', 'Unresolved'],
+    datasets: [{
+      data: [16638328, 195653666, 89059910],
+      backgroundColor: ['#1baf7a', '#eb6834', '#888780'],
+      borderRadius: 4,
+      borderSkipped: 'bottom'
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${(ctx.raw/1e6).toFixed(1)}M views` } } },
+    scales: {
+      x: { grid: { display: false }, ticks: { color: tickColor, font: { size: 11 } } },
+      y: {
+        grid: { color: gridColor },
+        ticks: { color: tickColor, font: { size: 11 }, callback: v => (v/1e6).toFixed(0) + 'M' },
+        beginAtZero: true
+      }
+    }
+  }
+});
+
+new Chart(document.getElementById('chart3'), {
+  type: 'bar',
+  data: {
+    labels: ['WordPress', 'ASP.NET', 'Joomla', 'Sitecore', 'Drupal', 'Granicus'],
+    datasets: [{
+      data: [51, 23, 4, 3, 1, 1],
+      backgroundColor: ['#1baf7a','#eb6834','#1baf7a','#eb6834','#1baf7a','#eb6834'],
+      borderRadius: 4,
+      borderSkipped: 'left'
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw} sites` } } },
+    scales: {
+      x: { grid: { color: gridColor }, ticks: { color: tickColor, font: { size: 11 } }, beginAtZero: true },
+      y: { grid: { display: false }, ticks: { color: labelColor, font: { size: 12 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>
